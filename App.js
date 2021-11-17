@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-
+ import qs from 'qs';
 import React,{useState} from 'react';
 import type {Node} from 'react';
 import {
@@ -59,7 +59,25 @@ const Section = ({children, title}): Node => {
     </View>
   );
 };
+function sendmail(to,subject,body)
+{
+  
+  let url='mailto:${to}';
+  const query = qs.stringify({
+    subject: subject,
+    body: body,
+    
+});
+if (query.length) {
+  url += '?${query}';
+}
+// const canOpen = await Linking.canOpenURL(url);
+// if (!canOpen) {
+//   throw new Error('Provided URL can not be handled');
+// }
 
+return Linking.openURL(url);
+}
 const App: () => Node = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [value, onChangeText] = React.useState(null);
@@ -112,7 +130,7 @@ const App: () => Node = () => {
       </TextInput>
       <Button title="SEND"  color="#841584" style={styles.buttonstyle} 
       
-       onPress={() => Linking.openURL('mailto:amanandhisguru1234@gmail.com?subject=null&body=Name:'+value+'\nInstitute:'+value2+'\nQuery:'+value4)}
+       onPress={() => sendmail('rakeshkumarpandey1970@gmail.com','testing',value4)}
       >
         
       </Button>
@@ -150,6 +168,8 @@ const App: () => Node = () => {
 </SafeAreaView>
   );
 };
+
+
 
 const styles = StyleSheet.create({
   sectionContainer: {
